@@ -2,3 +2,4 @@
 ^\.Rproj\.user$
 makefile
 R/.gitkeep
+^.gitignore
