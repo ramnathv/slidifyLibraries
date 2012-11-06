@@ -4,3 +4,4 @@
 *.Rproj
 .Rhistory
 .DS_Store
+makefile
