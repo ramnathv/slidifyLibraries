@@ -2,3 +2,4 @@
 ^\.Rproj\.user$
 *.RProj
 makefile
+R/.gitkeep
