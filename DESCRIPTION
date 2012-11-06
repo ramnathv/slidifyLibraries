@@ -7,3 +7,5 @@ Author: Ramnath Vaidyanathan
 Maintainer: Ramnath Vaidyanathan <ramnath.vaidya@gmail.com>
 Description: More about what it does (maybe more than one line)
 License: MIT
+Collate:
+    'package.R'
