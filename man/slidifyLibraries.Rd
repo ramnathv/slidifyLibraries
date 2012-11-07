@@ -1,6 +1,7 @@
 \docType{package}
-\name{slidify-package}
-\alias{slidify-package}
+\name{slidifyLibraries}
+\alias{slidifyLibraries}
+\alias{slidifyLibraries-package}
 \title{slidifyLibraries contains external dependencies required by slidify}
 \description{
   slidifyLibraries contains external dependencies required
