@@ -1,0 +1,12 @@
+Package: slidifyLibraries
+Type: Package
+Title: An R package containing libraries used by Slidify
+Version: 0.2
+Date: 2012-11-04
+Author: Ramnath Vaidyanathan <ramnath.vaidya@gmail.com>
+Maintainer: Ramnath Vaidyanathan <ramnath.vaidya@gmail.com>
+Description: This package contains external resources used by Slidify, which is an R package
+             that helps create elegant, interactive presentations from R Markdown.
+License: MIT
+Collate:
+    'package.R'
