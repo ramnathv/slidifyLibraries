@@ -3,6 +3,14 @@
 <head>
   {{> head }}
   {{{ page.stylesheets }}}
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="{{page.url.lib}}/widgets/quiz/js/jquery-1.7.min.js"><\/script>')</script> 
+  <script data-main="{{page.url.framework}}/js/slides" 
+    src="{{page.url.framework}}/js/require-1.0.8.min.js">
+  </script>
+
 </head>
 <body style="opacity: 0">
   <slides class="layout-widescreen">
@@ -16,6 +24,7 @@
     {{{ page.content }}}
     <slide class="backdrop"></slide>
   </slides>
+  {{> toc }}
 
   <!--[if IE]>
     <script 
@@ -24,9 +33,6 @@
     <script>CFInstall.check({mode: 'overlay'});</script>
   <![endif]-->
 </body>
-<!-- Grab CDN jQuery, fall back to local if offline -->
-<script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
-<script>window.jQuery || document.write('<script src="{{page.url.lib}}/widgets/quiz/js/jquery-1.7.min.js"><\/script>')</script>
 <!-- Load Javascripts for Widgets -->
 {{> javascripts }}
 </html>
