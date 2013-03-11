@@ -45,7 +45,8 @@ QuizSingleHandler.prototype = {
             self.question.data('submitted', false);
         }      
         
-        self.explanationVisible(false);          
+        self.explanationVisible(false); 
+        self.hintVisible(false);
     },
     
     showAnswer: function(self) {
@@ -86,17 +87,22 @@ QuizSingleHandler.prototype = {
         mode = (mode) ? 'block' : 'none';
         
         $('.quiz-explanation', self.question).each(function() {
-            $(this).css('display', mode);
+            // commented out to display answer as modal
+            // $(this).css('display', mode); 
+            $(this).css('display', 'none');
         });
     },
     
     init: function() {   
         var self = this;
         
+        // added data-numOption to the template
         var template = Mustache.compile('<input type="radio" class="quiz-radio" ' +
-        'name="quiz-question-{{idQuestion}}-options" ' +
+        'name="quiz-question-{{idQuestion}}-options" value="{{label}}"' +
+        'data-numOption="{{numOption}}"' +
         'id="quiz-question-{{idQuestion}}-option-{{numOption}}"/>' +
-        '<label for="quiz-question-{{idQuestion}}-option-{{numOption}}">{{label}}</label>');
+        '<label for="quiz-question-{{idQuestion}}-option-{{numOption}}"}>{{label}}</label>' 
+        );
         
         // creates radio buttons for the quiz
 
@@ -416,10 +422,12 @@ QuizTextHandler.prototype = {
         var self = isundef(self, this);
         
         mode = (mode) ? 'block' : 'none';
-        
+      
         $('.quiz-explanation', self.question).each(function() {
-            $(this).css('display', mode);
+            $(this).css('display', 'none')
+            // $(this).css('display', mode);
         });
+        
     },
     
     init: function() {
