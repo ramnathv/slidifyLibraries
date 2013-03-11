@@ -16,11 +16,15 @@ function SlideDeck(el) {
   this.container = el || document.querySelector('slides');
   this.slides = [];
   this.controller = null;
+  this.timings = [{slide: 1, time: new Date().getTime()}];
 
   this.getCurrentSlideFromHash_();
 
   // Call this explicitly. Modernizr.load won't be done until after DOM load.
   this.onDomLoaded_.bind(this)();
+  
+  // Trigger links from Table of Contents to Slides.
+  this.showContents();
 }
 
 /**
@@ -184,6 +188,12 @@ SlideDeck.prototype.onBodyKeyDown_ = function(e) {
     case 32: // space
     case 34: // PgDn
       this.nextSlide();
+      this.recordTimings(false);
+      e.preventDefault();
+      break;
+      
+    case 76: //l
+      this.recordTimings(true);
       e.preventDefault();
       break;
 
@@ -196,7 +206,6 @@ SlideDeck.prototype.onBodyKeyDown_ = function(e) {
 
     case 40: // down arrow
       this.nextSlide();
-      // console.log(new Date().getTime())
       e.preventDefault();
       break;
 
@@ -211,6 +220,13 @@ SlideDeck.prototype.onBodyKeyDown_ = function(e) {
       if (slideNumber != null) {
         this.gotoSlide(parseInt(slideNumber) - 1);
       }
+    break;
+    
+    // inserted to display table of contents
+    case 84: // T: Toggle Table of Contents
+       $("div#io2012-toc").toggle();
+       // $("div#io2012-toc li.dropdown").toggleClass("open");
+       // document.body.classList.toggle('show-comments')
     break;
 
     case 72: // H: Toggle code highlighting
@@ -301,9 +317,11 @@ SlideDeck.prototype.loadConfig_ = function(config) {
 
   this.loadTheme_(settings.theme || []);
 
+  /*
   if (settings.favIcon) {
     this.addFavIcon_(settings.favIcon);
   }
+  */
 
   // Prettyprint. Default to on.
   if (!!!('usePrettify' in settings) || settings.usePrettify) {
@@ -501,6 +519,7 @@ SlideDeck.prototype.nextSlide = function(opt_dontPush) {
   }
 };
 
+
 /* Slide events */
 
 /**
@@ -532,7 +551,7 @@ SlideDeck.prototype.triggerSlideEvent = function(type, slideNo) {
 };
 
 
-// inserted to work with popcorn.js 
+// Inserted to work with popcorn.js 
 SlideDeck.prototype.gotoSlide = function(curSlide) {
   if (curSlide < 0) {
     curSlide = 0;
@@ -544,6 +563,40 @@ SlideDeck.prototype.gotoSlide = function(curSlide) {
   this.prevSlide_ = curSlide - 1;
   this.updateSlides_();
 };
+
+// Record event timings to synchronize with popcorn.js
+// TODO: Make it more general so that events of different types can be captured.
+// For example, it would be useful to capture when p is pressed so that it can
+// be simulated while syncing with the video.
+SlideDeck.prototype.recordTimings = function(pause){
+  var temp = {
+    "time": new Date().getTime() - this.timings[0].time,
+    "slide": this.curSlide_ + 1
+  };
+  if (pause === true){
+    temp.action = 'pause'
+  } else if (temp.slide === this.timings[this.timings.length - 1].slide){
+    temp.action = "nextSlide"
+  } else {
+    temp.action = "gotoSlide"
+  };
+  this.timings.push(temp);
+  console.log(JSON.stringify(this.timings));
+};
+
+SlideDeck.prototype.showContents = function(){
+  var self = this;
+  $('ul.dropdown-menu li a').live('click', function(){
+    var i = $(this).data('slide');
+    self.gotoSlide(i+1);
+  });
+};
+
+SlideDeck.prototype.highlightCurSlide = function(){
+  var _i = this.curSlide_ - 2;
+  $('ul.dropdown-menu li').removeClass('current');
+  $('ul.dropdown-menu li:eq(' + _i + ')').addClass('current'); 
+}
 
 /**
  * @private
@@ -597,7 +650,9 @@ SlideDeck.prototype.updateSlides_ = function(opt_dontPush) {
     this.focusOverview_();
     return;
   }
-
+  
+  // highlight current slide in table of contents
+  this.highlightCurSlide();
 };
 
 /**
