@@ -1,26 +1,2 @@
 <script src="{{page.url.widgets}}/popcornjs/js/popcorn-complete.min.js"></script>
-<script>
-    function handleDomLoadedExtra() {
-      pop = Popcorn("#player")
-      var articles = document.getElementsByTagName('article');
-      for (var i = 0; i < articles.length; ++i) {
-        var article = articles[i];
-        var timings = article.getAttribute("data-timings");
-        if (timings != null) {
-          var starts = timings.split(",");
-          for (var j = 0; j < starts.length; ++j) {
-            pop.code({
-              start: parseInt(starts[j]),
-              slideNumber: i,
-              onStart: function(options) {
-                window.slidedeck.gotoSlide(options.slideNumber);
-              }
-            });
-          }
-        }
-      }
-    };
-    $(document).ready(function(){
-      handleDomLoadedExtra();
-    });
-</script>
+<script src="{{page.url.widgets}}/popcornjs/js/popcorn-custom.js"></script>
