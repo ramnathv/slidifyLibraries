@@ -1,5 +1,4 @@
-@import url(http://fonts.googleapis.com/css?family=Oswald);
-@import url(http://fonts.googleapis.com/css?family=Signika+Negative);
+@import url(http://fonts.googleapis.com/css?family=Open+Sans+Condensed:700|Source+Code+Pro:500|Open+Sans|Oswald);
 
 /* Styles for Table of Contents */
 #io2012-toc {
@@ -39,7 +38,7 @@
 }
 
 .title-slide hgroup > h2{
-  font-family: 'Signika Negative', 'Calibri', sans-serif;
+  font-family: 'Oswald', 'Calibri', sans-serif;
 }
 
 /* Fonts and Spacing */
@@ -52,7 +51,7 @@ article p, article li, article li.build, section p, section li{
 }
 
 slide:not(.segue) h2{
-  font-family: 'Signika Negative', 'Calibri', Arial, sans-serif;
+  font-family: 'Calibri', Arial, sans-serif;
   font-size: 52px;
   font-style: normal;
   font-weight: bold;
