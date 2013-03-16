@@ -8,6 +8,7 @@ function isundef(x, y) {
 QuizSingleHandler = function (question, idQuestion) {
     this.question = question;
     this.idQuestion = idQuestion;
+    this.hintsShown = 0;
 }
 
 QuizSingleHandler.prototype = {
@@ -66,7 +67,10 @@ QuizSingleHandler.prototype = {
         var self = isundef(self, this);
         mode = (mode) ? 'block' : 'none';
         $('.quiz-hint', self.question).each(function() {
-            $(this).css('display', mode);
+          $(this).css('display', mode);
+          // $(this).find('li:lt(' + self.hintsShown + 1, ')').show();
+          // console.log(self.hintsShown);
+          // self.hintsShown++;
         });
     },
     
@@ -75,9 +79,9 @@ QuizSingleHandler.prototype = {
         
         $('.quiz-hint', self.question).each(function() {
             if ( $(this).css('display') == 'none' )
-                self.hintVisible(true);
+              self.hintVisible(true);
             else
-                self.hintVisible(false);
+              self.hintVisible(false);
         });
     },
     
@@ -101,8 +105,18 @@ QuizSingleHandler.prototype = {
         'name="quiz-question-{{idQuestion}}-options" value="{{label}}"' +
         'data-numOption="{{numOption}}"' +
         'id="quiz-question-{{idQuestion}}-option-{{numOption}}"/>' +
-        '<label for="quiz-question-{{idQuestion}}-option-{{numOption}}"}>{{label}}</label>' 
+        '<label for="quiz-question-{{idQuestion}}-option-{{numOption}}">{{label}}</label>' 
         );
+        
+        /*
+        var template = Mustache.compile('<label for="quiz-question-{{idQuestion}}-option-{{numOption}}" class="radio">' +
+          '<input type="radio" class="quiz-radio" ' +
+          'name="quiz-question-{{idQuestion}}-options" value="{{label}}"' +
+          'data-numOption="{{numOption}}"' +
+          'id="quiz-question-{{idQuestion}}-option-{{numOption}}"/>' +
+          '{{label}}</label>' 
+        );
+        */
         
         // creates radio buttons for the quiz
 
@@ -269,7 +283,8 @@ QuizMultipleHandler.prototype = {
         mode = (mode) ? 'block' : 'none';
         
         $('.quiz-explanation', self.question).each(function() {
-            $(this).css('display', mode);
+          $(this).css('display', 'none');
+          // $(this).css('display', mode);
         });
     },
       
@@ -329,8 +344,25 @@ QuizTextHandler = function(question, idQuestion) {
 }
 
 QuizTextHandler.prototype = {
+  
+    makeCorrection: function(self){
+      var self = isundef(self, this);
+      self.clearCorrection();
+      self.question.data('submitted', true);
+      
+      $(".quiz-answerbox", self.question).each(function(){
+        var userAnswer = parseFloat($(this).val());
+        self.answer = $(this).data("answer");
+        if (Math.abs(userAnswer - self.answer)/self.answer < 0.02){
+          self.explanationVisible(true);
+          $(this).addClass('quiz-correct')
+        } else {
+          $(this).addClass('quiz-wrong')
+        }
+      });
+    },
     
-    makeCorrection: function(self) {
+    makeCorrection2: function(self) {
         var self = isundef(self, this);
         self.clearCorrection();
         self.question.data('submitted', true);
@@ -339,6 +371,7 @@ QuizTextHandler.prototype = {
         $('.quiz-answerbox', self.question).each(function() {
             var $answerbox = $(this);
             userAnswer = $answerbox.val();
+            self.answer = $(this).attr("data-answer");
         });
         
         if ( !self.caseSensitive ) {
@@ -402,14 +435,15 @@ QuizTextHandler.prototype = {
     },
     
     showAnswer: function(self) {
-        if ( self.answer == undefined ) 
-            return;
+        // if ( self.answer == undefined ) 
+        //   return;
     
         var self = isundef(self, this);
         self.clear();
         
         $('.quiz-answerbox', self.question).each(function() {
             var $this = $(this);
+            self.answer = $this.attr("data-answer");
             $this.val(self.answer);
             $this.addClass('quiz-correct');
         });
