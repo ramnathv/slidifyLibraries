@@ -12,18 +12,18 @@ b, strong { font-weight: bold }
 i, em { font-style: italic }
 
 a {
-    text-decoration: none;
-    color: #3B5998;
+  text-decoration: none;
+  color: #3B5998;
 }
 
 a:visited {
-    text-decoration: none;
-    color: #6882aa;
+  text-decoration: none;
+  color: #6882aa;
 }
 
 a:hover,
 a:focus {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 h1 {
@@ -49,14 +49,14 @@ code {
 */
 
 .quiz-single, .quiz-multiple, .quiz-text {
-    background-color: #F0F0F0;
-    padding-left: 15px;
-    padding-top: 15px;
+  background-color: #F0F0F0;
+  padding-left: 15px;
+  padding-top: 15px;
 }
 
 /* EDITED */
 li.quiz-option {
-    list-style-type: none;
+  list-style-type: none;
 }
 
 
@@ -68,23 +68,23 @@ li.quiz-option {
 }
 
 input[type="text"].quiz-correct, textarea.quiz-correct {
-    background-color: #50b378;
-    color: white;
+  border: 1px solid #50b378;
+  /* color: white; */
 }
 
 input[type="text"].quiz-wrong, textarea.quiz-wrong {
-    background-color: #EB4237;
-    color: white;
+  border: 1px solid #EB4237;
+  /* color: white; */
 }
 
 .quiz-correct label {
-    background-color: #50b378;
-    color: white;
+  background-color: #50b378;
+  color: white;
 }
 
 .quiz-wrong label {
-    background-color: #EB4237;
-    color: white;
+  background-color: #EB4237;
+  color: white;
 }
 
 .quiz-option label{
