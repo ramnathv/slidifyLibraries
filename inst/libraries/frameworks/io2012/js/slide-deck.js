@@ -224,7 +224,7 @@ SlideDeck.prototype.onBodyKeyDown_ = function(e) {
     
     // inserted to display table of contents
     case 84: // T: Toggle Table of Contents
-       $("div#io2012-toc").toggle();
+       $("#io2012-ptoc").toggle();
        // $("div#io2012-toc li.dropdown").toggleClass("open");
        // document.body.classList.toggle('show-comments')
     break;
@@ -596,6 +596,8 @@ SlideDeck.prototype.highlightCurSlide = function(){
   var _i = this.curSlide_ - 2;
   $('ul.dropdown-menu li').removeClass('current');
   $('ul.dropdown-menu li:eq(' + _i + ')').addClass('current'); 
+   $('div.pagination li').removeClass('active');
+   $('div.pagination li:eq(' + _i + ')').addClass('active'); 
 }
 
 /**
