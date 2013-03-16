@@ -3,38 +3,15 @@ layout: slide
 ---
 
 <div class='row-fluid'>
-<div class='span6'>
-  <form action="http://public.opencpu.org/R/pub/base/identity/ascii" method="POST" id="knitForm{{slide.sno}}">
-  {{{ slide.content }}}
-    <div id='aceeditor{{slide.sno}}'></div>
-     <div class='opencpu btn-toolbar pull-left'>
-      <div class="btn-group">
-      <a class="btn knitBtn btn-small" id="knitBtn{{slide.sno}}" data-title='Run Code'>
-        <i class="icon-play"></i> 
-      </a>
-      <a class="btn knitTest btn-small" id="knitTest{{slide.sno}}" data-title='Test Code'>
-        <i class="icon-check"></i>
-      </a>
-      <a id="clear{{slide.sno}}" class='btn btn-small knitClear' data-title='Clear Output'>
-        <i class="icon-remove"></i>
-      </a>
-      <a class='hint btn  btn-small' data-title="Get Hint" data-hint="{{slide.hint.html}}">
-        <i class="icon-bookmark"></i>
-      </a>
-      </div>
-    </div>
-    <br/>
-    <br/>
-    {{# slide.task }}
-    <div class='build'>
-      <div class='alert alert-info'>
-        {{{ slide.task.html }}}
-      </div>
-    </div>
-    {{/ slide.task }}
-  </form>
-</div>
-<div class='span6'>
-  <div id="knitResult{{slide.sno}}" class='wordwrap'></div>
-</div>
+  <div class='span6'>
+    <form action="http://public.opencpu.org/R/pub/base/identity/ascii" 
+      method="POST" id="knitForm{{slide.sno}}">
+      {{{ slide.content }}}
+      {{> opencpu-smallbuttons }}  
+      
+    </form>
+  </div>
+  <div class='span6'>
+    <div id="knitResult{{slide.sno}}" class='wordwrap'></div>
+  </div>
 </div>
