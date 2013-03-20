@@ -1,3 +1,4 @@
 revealjs:
   theme: default
   transition: default
+  center: "true"
