@@ -20,9 +20,9 @@
         controls: true,
         progress: true,
         history: true,
-        center: false,
-        theme: Reveal.getQueryHash().theme, 
-        transition: '{{page.revealjs.transition}}', 
+        center: {{page.revealjs.center}},
+        theme: Reveal.getQueryHash().theme || '{{page.revealjs.theme}}', 
+        transition: Reveal.getQueryHash().transition || '{{page.revealjs.transition}}', 
       });
   </script>
   {{> javascripts }}
