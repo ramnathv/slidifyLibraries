@@ -1,2 +1,10 @@
 <script src="{{page.url.widgets}}/popcornjs/js/popcorn-complete.min.js"></script>
 <script src="{{page.url.widgets}}/popcornjs/js/popcorn-custom.js"></script>
+{{# page.popcornjs.player }}
+<script>
+var pop = Popcorn.{{page.popcornjs.player}}(
+  "player",
+  "{{page.popcornjs.video}}"
+);
+</script>
+{{/ page.popcornjs.player }}
