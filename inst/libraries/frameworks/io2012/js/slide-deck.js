@@ -593,12 +593,17 @@ SlideDeck.prototype.showContents = function(){
 };
 
 SlideDeck.prototype.highlightCurSlide = function(){
+  self = this;
   var _i = this.curSlide_ - 2;
   $('ul.dropdown-menu li').removeClass('current');
   $('ul.dropdown-menu li:eq(' + _i + ')').addClass('current'); 
-   $('div.pagination li').removeClass('active');
-   $('div.pagination li:eq(' + _i + ')').addClass('active'); 
-}
+  $('div.pagination li').removeClass('active');
+  $('div.pagination li:eq(' + _i + ')').addClass('active'); 
+  $('div.pagination li a').live('click', function(){
+    var i = $(this).data('slide');
+    self.gotoSlide(i + 1); 
+  });
+};
 
 /**
  * @private
