@@ -5,6 +5,9 @@ makefile
 .DS_Store
 .cache/
 *.Rproj
+*.ico
+bootswatch
+inst/README.md
 inst/examples
 
 libraries/frameworks/deckjs
