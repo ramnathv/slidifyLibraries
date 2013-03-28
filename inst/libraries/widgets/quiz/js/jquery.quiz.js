@@ -9,15 +9,18 @@ QuizSingleHandler = function (question, idQuestion) {
     this.question = question;
     this.idQuestion = idQuestion;
     this.hintsShown = 0;
+    this.attempts = 0;
 }
 
 QuizSingleHandler.prototype = {
-
+      
     makeCorrection: function(self) {
         // when used as a callback, self will be passed as parameter,
         // since 'this' will be overridden by jquery
         var self = isundef(self, this);
         self.question.data('submitted', true);
+        self.attempts += 1;
+        console.log(self.attempts);
         
         $('.quiz-radio:checked', self.question).each(function() {
             var $radio = $(this);
@@ -25,9 +28,14 @@ QuizSingleHandler.prototype = {
             
             if ( $option.hasClass('quiz-answer') ) {
                 $option.addClass('quiz-correct');
+                $option.parents('div.quiz').data('attempts', self.attempts);
+                $option.parents('div.quiz').data('status', 'correct');
                 self.explanationVisible(true);  
-            } else
+            } else {
                 $option.addClass('quiz-wrong');
+                $option.parents('div.quiz').data('attempts', self.attempts);
+                $option.parents('div.quiz').data('status', 'wrong');
+            };
         });
     },
     
