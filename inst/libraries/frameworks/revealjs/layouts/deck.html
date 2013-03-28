@@ -13,17 +13,6 @@
 </body>
   <script src="{{page.url.framework}}/lib/js/head.min.js"></script>
   <script src="{{page.url.framework}}/js/reveal.min.js"></script>
-  <script>
-      // Full list of configuration options available here:
-      // https://github.com/hakimel/reveal.js#configuration
-      Reveal.initialize({
-        controls: true,
-        progress: true,
-        history: true,
-        center: {{page.revealjs.center}},
-        theme: Reveal.getQueryHash().theme || '{{page.revealjs.theme}}', 
-        transition: Reveal.getQueryHash().transition || '{{page.revealjs.transition}}', 
-      });
-  </script>
+  {{> initialize }}
   {{> javascripts }}
 </html>
