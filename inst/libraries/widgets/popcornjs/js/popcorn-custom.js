@@ -50,3 +50,30 @@ function handleDomLoadedExtra(pop) {
     }
   }
 };
+
+function syncSlides2Video(timings, pop){
+  $('slide').each(function(i){
+    $(this).on('slideenter', function(){
+      if (i >= 1){
+        pop.play(timings[i].time/1000)
+      } else {
+        if (!pop.paused()){
+          pop.play(0);
+        }
+      }
+    });
+  });
+};
+
+function syncSlides2(pop){
+  $('slide > article').each(function(i){
+    var timing_ = $(this).data('timings')
+      pop.code({ 
+        start: timing_,
+        slideNumber: i,
+        onStart: function(options){
+          window.slidedeck.gotoSlide(options.slideNumber) 
+        }
+      });
+    });
+};
