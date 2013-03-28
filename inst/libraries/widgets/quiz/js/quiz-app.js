@@ -4,7 +4,6 @@ function initialize_quiz(){
   $('.quiz > ol > li').addClass('quiz-option')
   $('.quiz > ol > li:has(em)').addClass('quiz-answer')
   // $('.quiz-hint li').hide();
-  $('.quiz.inline > ol').addClass('inline');
   
   // $('.quiz').find('li').addClass('quiz-option')
   // $('.quiz').find('li:has(em)').addClass('quiz-answer')
@@ -19,7 +18,7 @@ function initialize_quiz(){
     var ans = $(this).find("span.answer")
     $(this).children('ol').children('li').each(function(i){
       var _input = '<br/><input type="text" class="quiz-answerbox"' +
-      'data-answer=' + $(ans[i]).text() + '><span class="status"> </span>';
+      'data-answer=' + $(ans[i]).text() + '>';
      $(this).append(_input);
     })
   });

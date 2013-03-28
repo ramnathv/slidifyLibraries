@@ -151,7 +151,8 @@ function clearResult(i){
 function setupCells(){
   var ACECELLS = []  
   $('div.opencpu').each(function(i){
-    ACECELLS[i] = setupCell(i)
+    var slide_i = $(this).find('a.knitBtn').attr('id').replace( /^\D+/g, '');
+    ACECELLS[i] = setupCell(slide_i)
   });
 };
 

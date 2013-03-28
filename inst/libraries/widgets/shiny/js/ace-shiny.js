@@ -24,11 +24,11 @@ function newAceEditor(i){
 function setupCell(i) {
   var myEditor = newAceEditor(i);
   $("#clear" + i).click(function(e){
-    Shiny.unbindAll();
+    // Shiny.unbindAll();
     e.preventDefault();
     $("#result" + i).html("");
-    $("#run" + i).data('val', 0);
-    Shiny.bindAll();
+    $("#run" + i).data('val', 0).click();
+    // Shiny.bindAll();
   })
   return(myEditor);
 };

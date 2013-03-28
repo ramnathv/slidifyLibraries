@@ -602,8 +602,8 @@ SlideDeck.prototype.highlightCurSlide = function(){
   $('div.pagination li a').live('click', function(){
     var i = $(this).data('slide');
     self.gotoSlide(i + 1); 
-  });
-};
+  }); 
+}
 
 /**
  * @private

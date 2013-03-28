@@ -43,7 +43,7 @@
 
 /* Fonts and Spacing */
 article p, article li, article li.build, section p, section li{
-  font-family: 'Open Sans','Helvetica', 'Crimson Text', 'Garamond',  'Palatino', sans-serif;
+  font-family: 'Helvetica', 'Crimson Text', 'Garamond',  'Palatino', sans-serif;
   text-align: justify;
   font-size:22px;
   line-height: 1.5em;
@@ -198,7 +198,6 @@ ol {
 
 ol li {
   margin-bottom: 0.5em;
-  font-family: "Open Sans";
 }
 
 ol li ol {
