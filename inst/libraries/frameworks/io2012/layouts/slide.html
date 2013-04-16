@@ -1,7 +1,9 @@
 <slide class="{{ slide.class }}" id="{{ slide.id }}" style="background:{{{ slide.bg }}};">
+  {{# slide.header }}
   <hgroup>
     {{{ slide.header}}}
   </hgroup>
+  {{/ slide.header }}
   <article data-timings="{{ slide.dt }}">
     {{{ slide.content }}}
   </article>
