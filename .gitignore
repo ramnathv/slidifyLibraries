@@ -9,6 +9,7 @@ makefile
 bootswatch
 inst/README.md
 inst/examples
+*.Rhistory
 
 libraries/frameworks/deckjs
 
@@ -38,3 +39,7 @@ libraries/widgets/ace
 .Rproj.user
 
 libraries/frameworks/flowtime
+
+libraries/frameworks/bespoke
+
+libraries/widgets/morrisjs
