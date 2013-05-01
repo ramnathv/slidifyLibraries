@@ -73,6 +73,9 @@ var Reveal = (function(){
 			// Transition style
 			transition: 'default', // default/cube/page/concave/zoom/linear/fade/none
 
+			// Transition speed
+			transitionSpeed: 'default', // default/fast/slow
+
 			// Script dependencies to load
 			dependencies: []
 		},
@@ -181,7 +184,7 @@ var Reveal = (function(){
 		dom.slides = document.querySelector( '.reveal .slides' );
 
 		// Progress bar
-		if( !dom.wrapper.querySelector( '.progress' ) && config.progress ) {
+		if( !dom.wrapper.querySelector( '.progress' ) ) {
 			var progressElement = document.createElement( 'div' );
 			progressElement.classList.add( 'progress' );
 			progressElement.innerHTML = '<span></span>';
@@ -189,7 +192,7 @@ var Reveal = (function(){
 		}
 
 		// Arrow controls
-		if( !dom.wrapper.querySelector( '.controls' ) && config.controls ) {
+		if( !dom.wrapper.querySelector( '.controls' ) ) {
 			var controlsElement = document.createElement( 'aside' );
 			controlsElement.classList.add( 'controls' );
 			controlsElement.innerHTML = '<div class="navigate-left"></div>' +
@@ -306,9 +309,6 @@ var Reveal = (function(){
 		// Make sure we've got all the DOM elements we need
 		setupDOM();
 
-		// Subscribe to input
-		addEventListeners();
-
 		// Updates the presentation to match the current configuration values
 		configure();
 
@@ -342,6 +342,8 @@ var Reveal = (function(){
 		if( supports3DTransforms === false ) config.transition = 'linear';
 
 		dom.wrapper.classList.add( config.transition );
+
+		dom.wrapper.setAttribute( 'data-transition-speed', config.transitionSpeed );
 
 		if( dom.controls ) {
 			dom.controls.style.display = ( config.controls && dom.controls ) ? 'block' : 'none';
@@ -393,6 +395,20 @@ var Reveal = (function(){
 				dom.theme.setAttribute( 'href', themeURL );
 			}
 		}
+
+		postConfigure();
+
+	}
+
+	/**
+	 * Updates various parts of the presentatio after the
+	 * configuration has changed.
+	 */
+	function postConfigure() {
+
+		// Subscribe to input
+		removeEventListeners();
+		addEventListeners();
 
 		// Force a layout to make sure the current config is accounted for
 		layout();
@@ -460,16 +476,14 @@ var Reveal = (function(){
 		window.removeEventListener( 'hashchange', onWindowHashChange, false );
 		window.removeEventListener( 'resize', onWindowResize, false );
 
-		if( config.touch ) {
-			dom.wrapper.removeEventListener( 'touchstart', onTouchStart, false );
-			dom.wrapper.removeEventListener( 'touchmove', onTouchMove, false );
-			dom.wrapper.removeEventListener( 'touchend', onTouchEnd, false );
+		dom.wrapper.removeEventListener( 'touchstart', onTouchStart, false );
+		dom.wrapper.removeEventListener( 'touchmove', onTouchMove, false );
+		dom.wrapper.removeEventListener( 'touchend', onTouchEnd, false );
 
-			if( window.navigator.msPointerEnabled ) {
-				dom.wrapper.removeEventListener( 'MSPointerDown', onPointerDown, false );
-				dom.wrapper.removeEventListener( 'MSPointerMove', onPointerMove, false );
-				dom.wrapper.removeEventListener( 'MSPointerUp', onPointerUp, false );
-			}
+		if( window.navigator.msPointerEnabled ) {
+			dom.wrapper.removeEventListener( 'MSPointerDown', onPointerDown, false );
+			dom.wrapper.removeEventListener( 'MSPointerMove', onPointerMove, false );
+			dom.wrapper.removeEventListener( 'MSPointerUp', onPointerUp, false );
 		}
 
 		if ( config.progress && dom.progress ) {
@@ -944,6 +958,7 @@ var Reveal = (function(){
 
 		// Check which implementation is available
 		var requestMethod = element.requestFullScreen ||
+							element.webkitRequestFullscreen ||
 							element.webkitRequestFullScreen ||
 							element.mozRequestFullScreen ||
 							element.msRequestFullScreen;
@@ -977,9 +992,9 @@ var Reveal = (function(){
 	function resume() {
 
 		var wasPaused = dom.wrapper.classList.contains( 'paused' );
+		dom.wrapper.classList.remove( 'paused' );
 
 		cueAutoSlide();
-		dom.wrapper.classList.remove( 'paused' );
 
 		if( wasPaused ) {
 			dispatchEvent( 'resumed' );
@@ -1431,13 +1446,14 @@ var Reveal = (function(){
 	 * index will be for this slide rather than the currently
 	 * active one
 	 *
-	 * @return {Object} { h: <int>, v: <int> }
+	 * @return {Object} { h: <int>, v: <int>, f: <int> }
 	 */
 	function getIndices( slide ) {
 
 		// By default, return the current indices
 		var h = indexh,
-			v = indexv;
+			v = indexv,
+			f;
 
 		// If a slide is specified, return the indices of that slide
 		if( slide ) {
@@ -1456,7 +1472,14 @@ var Reveal = (function(){
 			}
 		}
 
-		return { h: h, v: v };
+		if( !slide && currentSlide ) {
+			var visibleFragments = currentSlide.querySelectorAll( '.fragment.visible' );
+			if( visibleFragments.length ) {
+				f = visibleFragments.length;
+			}
+		}
+
+		return { h: h, v: v, f: f };
 
 	}
 
@@ -1560,7 +1583,7 @@ var Reveal = (function(){
 	function navigateLeft() {
 
 		// Prioritize hiding fragments
-		if( availableRoutes().left && ( isOverview() || previousFragment() === false ) ) {
+		if( ( isOverview() || previousFragment() === false ) && availableRoutes().left ) {
 			slide( indexh - 1 );
 		}
 
@@ -1569,7 +1592,7 @@ var Reveal = (function(){
 	function navigateRight() {
 
 		// Prioritize revealing fragments
-		if( availableRoutes().right && ( isOverview() || nextFragment() === false ) ) {
+		if( ( isOverview() || nextFragment() === false ) && availableRoutes().right ) {
 			slide( indexh + 1 );
 		}
 
@@ -1578,7 +1601,7 @@ var Reveal = (function(){
 	function navigateUp() {
 
 		// Prioritize hiding fragments
-		if( availableRoutes().up && isOverview() || previousFragment() === false ) {
+		if( ( isOverview() || previousFragment() === false ) && availableRoutes().up ) {
 			slide( indexh, indexv - 1 );
 		}
 
@@ -1587,7 +1610,7 @@ var Reveal = (function(){
 	function navigateDown() {
 
 		// Prioritize revealing fragments
-		if( availableRoutes().down && isOverview() || nextFragment() === false ) {
+		if( ( isOverview() || nextFragment() === false ) && availableRoutes().down ) {
 			slide( indexh, indexv + 1 );
 		}
 
@@ -1613,7 +1636,7 @@ var Reveal = (function(){
 				if( previousSlide ) {
 					indexv = ( previousSlide.querySelectorAll( 'section' ).length + 1 ) || undefined;
 					indexh --;
-					slide();
+					slide( indexh, indexv );
 				}
 			}
 		}
@@ -1656,7 +1679,7 @@ var Reveal = (function(){
 
 		// Disregard the event if there's a focused element or a
 		// keyboard modifier key is present
-		if( hasFocus || event.shiftKey || event.altKey || event.ctrlKey || event.metaKey ) return;
+		if( hasFocus || (event.shiftKey && event.keyCode !== 32) || event.altKey || event.ctrlKey || event.metaKey ) return;
 
 		var triggered = true;
 
@@ -1683,7 +1706,7 @@ var Reveal = (function(){
 			// end
 			case 35: slide( Number.MAX_VALUE ); break;
 			// space
-			case 32: isOverview() ? deactivateOverview() : navigateNext(); break;
+			case 32: isOverview() ? deactivateOverview() : event.shiftKey ? navigatePrev() : navigateNext(); break;
 			// return
 			case 13: isOverview() ? deactivateOverview() : triggered = false; break;
 			// b, period, Logitech presenter tools "black screen" button
@@ -1983,6 +2006,9 @@ var Reveal = (function(){
 
 		// Forces an update in slide layout
 		layout: layout,
+
+		// Returns an object with the available routes as booleans (left/right/top/bottom)
+		availableRoutes: availableRoutes,
 
 		// Toggles the overview mode on/off
 		toggleOverview: toggleOverview,
