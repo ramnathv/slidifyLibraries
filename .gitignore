@@ -10,6 +10,7 @@ bootswatch
 inst/README.md
 inst/examples
 *.Rhistory
+archives
 
 libraries/frameworks/deckjs
 
