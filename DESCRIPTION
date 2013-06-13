@@ -10,3 +10,4 @@ Description: This package contains external resources used by Slidify, which is 
 License: MIT
 Collate:
     'package.R'
+    'interactive.R'
