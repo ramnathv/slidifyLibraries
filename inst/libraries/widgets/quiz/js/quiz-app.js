@@ -43,7 +43,7 @@ function initialize_quiz(){
 function submitCompare(e){
   e.preventDefault();
   var studentAns = $(this).siblings('textarea').val();
-  var correctAns = $(this).siblings('div.answer').html();
+  var correctAns = $(this).siblings('div.explanation').html();
   if (studentAns.length < 50){
     bootbox.alert("Please type your answer (at least 50 characters)")
   } else {
