@@ -191,7 +191,7 @@ table tr:nth-child(2n+1) {
 /* Styling for Ordered Lists (only for io2012) */
 
 ol {
-  margin-left: 5em;
+  margin-left: 1.2em;
   margin-bottom: 1em;
   postion: relative;
 }
