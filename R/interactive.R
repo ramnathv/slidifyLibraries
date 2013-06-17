@@ -30,3 +30,26 @@ make_opencpu_version = function(){
   doc = gsub('./assets/', 'www/assets/', doc, fixed = TRUE)
   cat(doc, file = 'index.html')
 }
+
+
+make_interactive <- function(){
+  knitr::knit_hooks$set(source = hook_interactive)
+  knitr::opts_template$set(
+    interactive = list(tidy = FALSE, echo = TRUE, eval = FALSE, interactive = TRUE),
+    shiny = list(tidy = FALSE, echo = FALSE, eval = TRUE, results = 'asis', comment = NA)
+  )
+}
+
+renderCodeCells <- function(input, output, env = .slidifyEnv){
+  cells = getCells()
+  invisible(lapply(cells, function(i){
+    output[[paste0('knitResult', i)]] <- shiny::reactive({
+      if (input[[paste0('runCode', i)]] != 0)
+        return(isolate({
+          print('running code')
+          runCode(input[[paste0('interactive', i)]], env)
+        }))
+    })
+    outputOptions(output, paste0('knitResult', i), suspendWhenHidden = F)
+  }))
+}
