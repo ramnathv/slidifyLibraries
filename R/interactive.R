@@ -53,3 +53,8 @@ renderCodeCells <- function(input, output, env = .slidifyEnv){
     outputOptions(output, paste0('knitResult', i), suspendWhenHidden = F)
   }))
 }
+
+slidifyUI<- function(...){
+  require(shiny)
+  cat(as.character(div(class = 'row-fluid', ...)))
+}
