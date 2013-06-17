@@ -6810,3 +6810,8 @@ a.thumbnail:hover {
 .affix {
   position: fixed;
 }
+
+/* set background color to black when used as widget */
+body {
+  background-color: #000;
+}
