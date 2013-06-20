@@ -7,18 +7,19 @@ hook_interactive = function(x, options){
   }
 }
 
-runCode <- function(code, env){
+runCode <- function(code, env, deckDir){
   require(knitr)
   chunk = paste('```{r echo = F,message = F, comment = NA, results = "asis"}\n', 
     code, "\n```", collapse = '\n')
+  # opts_chunk$set(fig.path = file.path(deckDir, 'assets', 'fig/'), dev = 'png')
   out = knit(text = chunk, envir = env)
   markdown::markdownToHTML(text = out, fragment = TRUE)
 }
 
 # Function to dynamically extract cell numbers for all interactive cells
-getCells <- function(){
+getCells <- function(indexFile = 'www/index.html'){
   require(XML)
-  doc = htmlParse('www/index.html')
+  doc = htmlParse(indexFile)
   cells = getNodeSet(doc, '//textarea')
   as.numeric(sapply(cells, xmlGetAttr, 'data-cell'))
 }
@@ -40,14 +41,14 @@ make_interactive <- function(){
   )
 }
 
-renderCodeCells <- function(input, output, env = .slidifyEnv){
-  cells = getCells()
+renderCodeCells <- function(input, output, env = .slidifyEnv, deckDir){
+  cells = getCells(file.path(deckDir, 'index.html'))
   invisible(lapply(cells, function(i){
     output[[paste0('knitResult', i)]] <- shiny::reactive({
       if (input[[paste0('runCode', i)]] != 0)
         return(isolate({
           print('running code')
-          runCode(input[[paste0('interactive', i)]], env)
+          runCode(input[[paste0('interactive', i)]], env, deckDir)
         }))
     })
     outputOptions(output, paste0('knitResult', i), suspendWhenHidden = F)
