@@ -34,6 +34,19 @@ function bindActions(){
       handleOnClick($(self).data('action'), $(self).data('cell'))
     })
   })
+  // bind the action button too if Shiny is not found
+  if (window.Shiny == undefined){
+    $('a.action-button').each(function(){
+      var self = this;
+      $(self).bind("hover", function(){
+        $(self).tooltip({placement: "bottom"})
+      })
+     .bind("click", function(event){
+        event.preventDefault();
+        handleOnClick($(self).data('action'), $(self).data('cell'))
+      })
+    })
+  }
 }
 
 function handleOnClick(action, cell){
