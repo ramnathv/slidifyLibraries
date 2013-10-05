@@ -1,9 +1,10 @@
 hook_interactive = function(x, options){
   if (!is.null(options$interactive) && (options$interactive)){
     paste0("<textarea class='interactive' id='interactive{{slide.num}}' data-cell='{{slide.num}}' data-results='", options$results, "' style='display:none'>", 
-    x, "</textarea>")
+     paste(x, collapse = '\n'), "</textarea>")
   } else {
-    stringr::str_c("\n\n```", tolower(options$engine), "\n", x, "```\n\n")
+    stringr::str_c("\n\n```", tolower(options$engine), "\n", 
+      paste(x, collapse = "\n"), "\n```\n\n")
   }
 }
 
@@ -20,7 +21,7 @@ runCode <- function(code, env, deckDir){
 getCells <- function(indexFile = 'www/index.html'){
   require(XML)
   doc = htmlParse(indexFile)
-  cells = getNodeSet(doc, '//textarea')
+  cells = getNodeSet(doc, '//textarea[@class="interactive"]')
   as.numeric(sapply(cells, xmlGetAttr, 'data-cell'))
 }
 
