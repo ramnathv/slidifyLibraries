@@ -122,8 +122,17 @@ function runCode(cell){
     url = "http://public.opencpu.org/R/pub/base/identity/ascii",
     script = 'library(knitr)\n' +
     'knit2html(text = knit(text = "' + chunk + '"), fragment.only = TRUE)';
-    
-  /* Send the data using POST and put the results in a div */
+  console.log(chunk)
+  ocpu.seturl("//opencpu.ocpu.io/markdownapp/R")
+  var req = ocpu.call("rmdtext", {
+      text : chunk
+    }, function(session){
+      console.log(session.getFileURL("output.html"))
+      $(resultEl).attr('src', session.getFileURL("output.html"))     
+    }).fail(function(text){
+      alert("Error: " + req.responseText);
+    });
+  /* Send the data using POST and put the results in a div
   $.post(url, {x: script},
     function(data){
       $(resultEl).html(eval(data));
@@ -132,4 +141,5 @@ function runCode(cell){
       })
   })
   .error(function() { alert("An error occured")}); 
+  */
 }
