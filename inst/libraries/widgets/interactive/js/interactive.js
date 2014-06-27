@@ -8,7 +8,7 @@ function getHint(cell){
 
 // Clear Result
 function clearResult(cell){
-  $('#knitResult' + cell).html("");
+  $('#knitResult' + cell).attr("src", "");
   if (window.Shiny != undefined){
     Shiny.unbindAll();
     $("#runCode" + cell).data('val', 0);
@@ -132,14 +132,4 @@ function runCode(cell){
     }).fail(function(text){
       alert("Error: " + req.responseText);
     });
-  /* Send the data using POST and put the results in a div
-  $.post(url, {x: script},
-    function(data){
-      $(resultEl).html(eval(data));
-      $('pre code').each(function(i, e){
-        hljs.highlightBlock(e);
-      })
-  })
-  .error(function() { alert("An error occured")}); 
-  */
 }
