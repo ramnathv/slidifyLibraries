@@ -397,7 +397,7 @@ pre > code {
 
 .title-slide {
   background-color: #FFFFFF; /* #EDE0CF; ; #CA9F9D*/
-  background-image: url('../img/front-cover.png'); 
+  background-image: url('libraries/frameworks/io2012-wush/images/background.png'); 
   background-repeat:no-repeat; 
   background-position:center; 
   background-size: 100% 100%;
@@ -405,7 +405,7 @@ pre > code {
 
 .title-slide hgroup {
   position:relative; 
-  top: 75%; 
+  top: 50%; 
   left: 50%; 
 }
 
@@ -416,6 +416,6 @@ pre > code {
 .title-slide hgroup > h1, 
 .title-slide hgroup > h2 {
   color: #535E43 ;  /* ; #EF5150 */
-  font-size: 250%;
+  font-size: 150%;
 }
 
